@@ -12,4 +12,5 @@ public class AdvicesCollection {
     private String minAmount;
     private String maxAmount;
     private String actionsPublicView;
+    private String tempPrice;
 }

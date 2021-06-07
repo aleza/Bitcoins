@@ -102,6 +102,14 @@ public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
                     .get("public_view")
                     .textValue());
 
+            advicesCollection.setTempPrice(productNode
+                    .get("data")
+                    .get("ad_list")
+                    .get(i)
+                    .get("data")
+                    .get("temp_price")
+                    .textValue());
+
             listAdvices.add(advicesCollection);
 
             buyBitArgNatBT.setOccurs(productNode

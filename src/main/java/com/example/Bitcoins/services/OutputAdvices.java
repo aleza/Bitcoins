@@ -42,9 +42,15 @@ public class OutputAdvices {
             List<AdvicesCollection> listAdvice = buyBitArgNatBT.getSalesAdvices();
 
             for (AdvicesCollection item : listAdvice) {
-                writer.write(String.valueOf(item)+"\n");
+                writer.write(String.valueOf(
+                        "user="+item.getProfileUserName())+"\n"+
+                        "advice="+item.getActionsPublicView()+"\n"+
+                        "location="+item.getLocation()+"\n"+
+                        "currency="+item.getCurrency()+"\n"+
+                        "min_amount="+item.getMinAmount()+"\n"+
+                        "max_amount="+item.getMaxAmount()+"\n"+
+                        "temp_price="+item.getTempPrice()+"\n");
             }
-
 
             writer.close();
         } catch (IOException ioException) {
