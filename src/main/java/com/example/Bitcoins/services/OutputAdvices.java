@@ -1,8 +1,7 @@
 package com.example.Bitcoins.services;
 
+import com.example.Bitcoins.model.AdvicesCollection;
 import com.example.Bitcoins.model.BuyBitArgNatBT;
-import com.example.Bitcoins.model.ListAdvices;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -21,8 +20,7 @@ public class OutputAdvices {
     @Value("${directory.home}")
     private String DIRECTORY_HOME_ADVICE;
 
-
-    public void writeToDirectory(String directoryHome, String fileName, ListAdvices listAdvices) throws IOException {
+    public void writeToDirectory(String directoryHome, String fileName, BuyBitArgNatBT buyBitArgNatBT) throws IOException {
 
         try {
             File directory = new File(directoryHome); //Reviso si existe el directorio, sino lo creo
@@ -41,10 +39,9 @@ public class OutputAdvices {
 
             FileWriter writer = new FileWriter(file_advices);
 
+            List<AdvicesCollection> listAdvice = buyBitArgNatBT.getSalesAdvices();
 
-            List<BuyBitArgNatBT> listAdvice = listAdvices.getAdvice();
-
-            for (BuyBitArgNatBT item : listAdvice) {
+            for (AdvicesCollection item : listAdvice) {
                 writer.write(String.valueOf(item)+"\n");
             }
 

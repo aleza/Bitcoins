@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class ListAdvices {
-    private List<BuyBitArgNatBT> advice;
+    private List<AdvicesCollection> advice;
 }

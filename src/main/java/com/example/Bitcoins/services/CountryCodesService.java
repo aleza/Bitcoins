@@ -1,11 +1,8 @@
 package com.example.Bitcoins.services;
 
 import com.example.Bitcoins.model.BuyBitArgNatBT;
-import com.example.Bitcoins.model.CountryCodes;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +16,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static com.fasterxml.jackson.databind.type.LogicalType.Map;
 
 @Component
 @EnableScheduling
@@ -96,16 +88,6 @@ public class CountryCodesService {
             module.addDeserializer(BuyBitArgNatBT.class, new AdviceDeserializer());
             mapper.registerModule(module);
             BuyBitArgNatBT advice = mapper.readValue(bitcoinsOffers, BuyBitArgNatBT.class);
-
-            for (int i = 0; i < advice.getOccurs(); i++) {
-                System.out.println("Username --------------> " + advice.getProfileUserName());
-                System.out.println("location_getLocation --> " + advice.getLocation());
-                System.out.println("location_getOccurs ----> " + advice.getOccurs());
-
-               // System.out.println("Advices list __________> " + advice.getSalesAdvices());
-            }
-
-//            outputAdvices.writeToDirectory(DIRECTORY_HOME, FILE_ADVICES);
 
         } catch (WebClientResponseException responseException) {
             log.error("Se produjo un error en la consulta HTTP", responseException);

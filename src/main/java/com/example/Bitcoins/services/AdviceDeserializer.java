@@ -2,7 +2,6 @@ package com.example.Bitcoins.services;
 
 import com.example.Bitcoins.model.AdvicesCollection;
 import com.example.Bitcoins.model.BuyBitArgNatBT;
-import com.example.Bitcoins.model.ListAdvices;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -10,11 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,25 +39,18 @@ public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
     private String DIRECTORY_HOME_ADVICE;
 
 
-
-
-
     @Override
     public BuyBitArgNatBT deserialize(JsonParser jp, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
 
-
-
         OutputAdvices outputAdvices = new OutputAdvices();
         JsonNode productNode = jp.getCodec().readTree(jp);
 
-
-        ListAdvices listAdvices = new ListAdvices();
-        ArrayList<BuyBitArgNatBT> itemList = new ArrayList<>();
-
+        List<AdvicesCollection> listAdvices = new ArrayList<>();
+        //ArrayList<BuyBitArgNatBT> itemList = new ArrayList<>();
+        buyBitArgNatBT = new BuyBitArgNatBT();
         for (int i = 0; i < productNode.get("data").get("ad_count").intValue(); i++) {
 
-            buyBitArgNatBT = new BuyBitArgNatBT();
             advicesCollection = new AdvicesCollection();
 
             advicesCollection.setProfileUserName(productNode
@@ -114,47 +102,16 @@ public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
                     .get("public_view")
                     .textValue());
 
-            buyBitArgNatBT.setSalesAdvices(advicesCollection);
-
-            System.out.println("Advices list __________> " + buyBitArgNatBT.getSalesAdvices());
-
-            //--------------------------------------------
-            buyBitArgNatBT.setProfileUserName(productNode
-                    .get("data")
-                    .get("ad_list")
-                    .get(i)
-                    .get("data")
-                    .get("profile")
-                    .get("username")
-                    .textValue());
-
-            buyBitArgNatBT.setLocation(productNode
-                    .get("data")
-                    .get("ad_list")
-                    .get(i)
-                    .get("data")
-                    .get("location_string")
-                    .textValue());
-            //---------------------------------
+            listAdvices.add(advicesCollection);
 
             buyBitArgNatBT.setOccurs(productNode
                     .get("data")
                     .get("ad_count")
                     .intValue());
-
-            itemList.add(buyBitArgNatBT);
-
-            System.out.println("Username --------------> " + buyBitArgNatBT.getProfileUserName());
-            System.out.println("location_getLocation --> " + buyBitArgNatBT.getLocation());
-            System.out.println("location_getOccurs ----> " + i);
-
         }
-        listAdvices.setAdvice(itemList);
 
-        outputAdvices.writeToDirectory("/home/alexis/Bitcoins", "/home/alexis/Bitcoins/advices.txt", listAdvices );
-
-
-//        System.out.println("listAdvices  *****  " + listAdvices);
+        buyBitArgNatBT.setSalesAdvices(listAdvices);
+        outputAdvices.writeToDirectory("/home/alexis/Bitcoins", "/home/alexis/Bitcoins/advices.txt", buyBitArgNatBT );
 
         return buyBitArgNatBT;
     }
