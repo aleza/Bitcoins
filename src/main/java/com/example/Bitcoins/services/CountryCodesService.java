@@ -28,22 +28,14 @@ public class CountryCodesService {
     @Autowired
     private OutputAdvices outputAdvices;
 
-    public CountryCodesService() {
-        FILE_COUNTRY_CODES = null;
-        DIRECTORY_HOME = null;
-        BUY_ARG_NAT_BANK_TRANSFER = null;
-        FILE_ADVICES = null;
-    }
-
-
     @Value("${directory.home}")
-    private final String DIRECTORY_HOME;
+    private String DIRECTORY_HOME;
     @Value("${file.country-codes}")
-    private final String FILE_COUNTRY_CODES;
+    private String FILE_COUNTRY_CODES;
     @Value("${file.advices}")
-    private final String FILE_ADVICES;
+    private String FILE_ADVICES;
     @Value("${url.buy-arg-nat-bank-transfer}")
-    private final String BUY_ARG_NAT_BANK_TRANSFER;
+    private String BUY_ARG_NAT_BANK_TRANSFER;
 
     /*
     @Scheduled(fixedRateString = "${app.schedule.rate-ms}")
@@ -80,14 +72,13 @@ public class CountryCodesService {
                     .bodyToMono(String.class)
                     .block();
 
-            //outputCountryCodes.writeToDirectory(DIRECTORY_HOME, FILE_COUNTRY_CODES, paises);
-
             ObjectMapper mapper = new ObjectMapper();
             SimpleModule module = new SimpleModule();
 
-            module.addDeserializer(BuyBitArgNatBT.class, new AdviceDeserializer());
+            module.addDeserializer(BuyBitArgNatBT.class, new AdviceDeserializer(DIRECTORY_HOME, FILE_ADVICES));
             mapper.registerModule(module);
             BuyBitArgNatBT advice = mapper.readValue(bitcoinsOffers, BuyBitArgNatBT.class);
+
 
         } catch (WebClientResponseException responseException) {
             log.error("Se produjo un error en la consulta HTTP", responseException);

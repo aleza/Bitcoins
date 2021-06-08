@@ -8,15 +8,12 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@PropertySource("classpath:application.properties")
 public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
 
     @Autowired
@@ -26,18 +23,19 @@ public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
     @Autowired
     private OutputAdvices outputAdvices;
 
+    private String directory;
+    private String file;
 
-    public AdviceDeserializer() {
+    public AdviceDeserializer(String directory, String file) {
         this(null);
+
+        this.directory = directory;
+        this.file = file;
     }
 
     public AdviceDeserializer(Class<?> vc) {
         super(vc);
     }
-
-    @Value("${directory.home}")
-    private String DIRECTORY_HOME_ADVICE;
-
 
     @Override
     public BuyBitArgNatBT deserialize(JsonParser jp, DeserializationContext ctxt)
@@ -119,7 +117,7 @@ public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
         }
 
         buyBitArgNatBT.setSalesAdvices(listAdvices);
-        outputAdvices.writeToDirectory("/home/alexis/Bitcoins", "/home/alexis/Bitcoins/advices.txt", buyBitArgNatBT );
+        outputAdvices.writeToDirectory(directory, file, buyBitArgNatBT );
 
         return buyBitArgNatBT;
     }

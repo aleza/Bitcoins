@@ -3,8 +3,6 @@ package com.example.Bitcoins.services;
 import com.example.Bitcoins.model.AdvicesCollection;
 import com.example.Bitcoins.model.BuyBitArgNatBT;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -14,11 +12,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-@PropertySource("classpath:application.properties")
 public class OutputAdvices {
-
-    @Value("${directory.home}")
-    private String DIRECTORY_HOME_ADVICE;
 
     public void writeToDirectory(String directoryHome, String fileName, BuyBitArgNatBT buyBitArgNatBT) throws IOException {
 
