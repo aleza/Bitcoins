@@ -1,8 +1,10 @@
 package com.example.Bitcoins.services;
 
+import com.example.Bitcoins.kafka.AdvicesProducer;
 import com.example.Bitcoins.model.AdvicesCollection;
 import com.example.Bitcoins.model.BuyBitArgNatBT;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -47,6 +49,10 @@ public class OutputAdvices {
             }
 
             writer.close();
+
+            AdvicesProducer advicesProducer = new AdvicesProducer();
+            advicesProducer.publishToKafka(buyBitArgNatBT);
+
         } catch (IOException ioException) {
             log.error("Se produjo un error al intentar grabar los avisos", ioException);
         }
