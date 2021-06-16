@@ -5,7 +5,6 @@ import com.example.Bitcoins.model.BuyBitArgNatBT;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +13,7 @@ import java.util.Properties;
 @Service
 public class AdvicesProducer {
 
-    private static String SERVER_HOME;
-
-    @Value("${server.home}")
-    public void setServerHome(String serverHome) {
-        this.SERVER_HOME = serverHome;
-    }
-    //private String SERVER_HOME;
-
-    public void publishToKafka(BuyBitArgNatBT buyBitArgNatBT) {
+    public void publishToKafka(BuyBitArgNatBT buyBitArgNatBT, String SERVER_HOME) {
 
         Properties properties = new Properties();
 

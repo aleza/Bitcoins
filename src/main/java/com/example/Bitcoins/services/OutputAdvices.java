@@ -45,12 +45,9 @@ public class OutputAdvices {
                         "max_amount="+item.getMaxAmount()+"\n"+
                         "temp_price="+item.getTempPrice()+"\n");
             }
-
             writer.close();
-
         } catch (IOException ioException) {
             log.error("Se produjo un error al intentar grabar los avisos", ioException);
         }
-
     }
 }

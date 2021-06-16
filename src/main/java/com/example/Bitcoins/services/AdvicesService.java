@@ -37,6 +37,8 @@ public class AdvicesService {
     private String FILE_ADVICES;
     @Value("${url.buy-arg-nat-bank-transfer}")
     private String BUY_ARG_NAT_BANK_TRANSFER;
+    @Value("${server.home}")
+    private String SERVER_HOME;
 
     /*
     @Scheduled(fixedRateString = "${app.schedule.rate-ms}")
@@ -87,7 +89,7 @@ public class AdvicesService {
 
 //          Publica en Kafka
             AdvicesProducer advicesProducer = new AdvicesProducer();
-            advicesProducer.publishToKafka(advice);
+            advicesProducer.publishToKafka(advice, SERVER_HOME);
 
 
         } catch (WebClientResponseException responseException) {
