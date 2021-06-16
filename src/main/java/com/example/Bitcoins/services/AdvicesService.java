@@ -1,5 +1,6 @@
 package com.example.Bitcoins.services;
 
+import com.example.Bitcoins.kafka.AdvicesProducer;
 import com.example.Bitcoins.model.BuyBitArgNatBT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -20,7 +21,7 @@ import java.io.*;
 @Component
 @EnableScheduling
 @Slf4j
-public class CountryCodesService {
+public class AdvicesService {
 
     @Autowired
     private OutputCountryCodes outputCountryCodes;
@@ -75,9 +76,18 @@ public class CountryCodesService {
             ObjectMapper mapper = new ObjectMapper();
             SimpleModule module = new SimpleModule();
 
-            module.addDeserializer(BuyBitArgNatBT.class, new AdviceDeserializer(DIRECTORY_HOME, FILE_ADVICES));
+            module.addDeserializer(BuyBitArgNatBT.class, new AdviceDeserializer());
             mapper.registerModule(module);
             BuyBitArgNatBT advice = mapper.readValue(bitcoinsOffers, BuyBitArgNatBT.class);
+
+
+//          Graba en disco
+            OutputAdvices outputAdvices = new OutputAdvices();
+            outputAdvices.writeToDirectory(DIRECTORY_HOME, FILE_ADVICES, advice );
+
+//          Publica en Kafka
+            AdvicesProducer advicesProducer = new AdvicesProducer();
+            advicesProducer.publishToKafka(advice);
 
 
         } catch (WebClientResponseException responseException) {

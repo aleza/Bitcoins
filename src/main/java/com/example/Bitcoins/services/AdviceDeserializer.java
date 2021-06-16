@@ -13,24 +13,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
 
     @Autowired
     private BuyBitArgNatBT buyBitArgNatBT;
     @Autowired
     private AdvicesCollection advicesCollection;
-    @Autowired
-    private OutputAdvices outputAdvices;
 
-    private String directory;
-    private String file;
-
-    public AdviceDeserializer(String directory, String file) {
+    public AdviceDeserializer() {
         this(null);
-
-        this.directory = directory;
-        this.file = file;
     }
 
     public AdviceDeserializer(Class<?> vc) {
@@ -41,11 +32,9 @@ public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
     public BuyBitArgNatBT deserialize(JsonParser jp, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
 
-        OutputAdvices outputAdvices = new OutputAdvices();
         JsonNode productNode = jp.getCodec().readTree(jp);
 
         List<AdvicesCollection> listAdvices = new ArrayList<>();
-        //ArrayList<BuyBitArgNatBT> itemList = new ArrayList<>();
         buyBitArgNatBT = new BuyBitArgNatBT();
         for (int i = 0; i < productNode.get("data").get("ad_count").intValue(); i++) {
 
@@ -115,10 +104,7 @@ public class AdviceDeserializer extends StdDeserializer<BuyBitArgNatBT> {
                     .get("ad_count")
                     .intValue());
         }
-
         buyBitArgNatBT.setSalesAdvices(listAdvices);
-        outputAdvices.writeToDirectory(directory, file, buyBitArgNatBT );
-
         return buyBitArgNatBT;
     }
 }

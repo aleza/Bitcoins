@@ -52,11 +52,6 @@ public class AdvicesProducer {
                     );
             producer.send(producerRecord);
         }
-
         producer.close();
-
-        //topic name
-
     }
-
 }
